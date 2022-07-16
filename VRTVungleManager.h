@@ -30,6 +30,7 @@
                                  withSize:(VungleAdSize)size
                  vrtVungleManagerDelegate:(nonnull id <VRTVungleManagerDelegate>) vrtVungleManagerDelegate;
 
--(nullable NSError*) addToView:(nonnull UIView*)containerView placementId:(nonnull NSString*)placementId;
-    
+-(nullable NSError*) showBanner:(nonnull NSString*)placementId inContainerView:(nonnull UIView*)containerView;
+-(nullable NSError*) showInterstitial:(nonnull NSString*)placementId viewController:(nonnull UIViewController*)viewController;
+
 @end

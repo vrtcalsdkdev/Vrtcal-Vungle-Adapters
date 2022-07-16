@@ -62,11 +62,24 @@
     return error;
 }
 
--(nullable NSError*) addToView:(nonnull UIView*)containerView placementId:(nonnull NSString*)placementId {
+-(nullable NSError*) showBanner:(nonnull NSString*)placementId inContainerView:(UIView*)containerView {
     NSError* error = nil;
     [self.sdk
         addAdViewToView:containerView
         withOptions:nil
+        placementID:placementId
+        error:&error
+    ];
+    
+    return error;
+}
+
+- (nullable NSError*) showInterstitial:(NSString*)placementId viewController:(UIViewController*)viewController {
+    NSError* error = nil;
+    
+    [self.sdk
+        playAd:viewController
+        options:nil
         placementID:placementId
         error:&error
     ];

@@ -35,13 +35,22 @@
         self.customEventConfig.adSize.width,
         self.customEventConfig.adSize.height
     );
+    
+    //Must precede loadPlacementWithID as vungleAdPlayabilityUpdate is often called immediately
     self.containerView = [[UIView alloc] initWithFrame:frame];
     
-    [[VRTVungleManager singleton]
+    NSError *error = [[VRTVungleManager singleton]
         loadPlacementWithID:placementId
         withSize:VungleAdSizeBanner
         vrtVungleManagerDelegate:(id <VRTVungleManagerDelegate>) self
     ];
+    
+    if (error) {
+        [self.customEventLoadDelegate customEventFailedToLoadWithError:error];
+        return;
+    }
+    
+    
 }
 
 - (UIView*) getView {
@@ -95,7 +104,7 @@
         return;
     }
     
-    [[VRTVungleManager singleton] addToView:self.containerView placementId:placementID];
+    [[VRTVungleManager singleton] showBanner:placementID inContainerView:self.containerView];
     [self.customEventLoadDelegate customEventLoaded];
 }
 @end
