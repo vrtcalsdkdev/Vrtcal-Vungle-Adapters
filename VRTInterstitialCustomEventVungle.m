@@ -19,7 +19,7 @@
 @implementation VRTInterstitialCustomEventVungle
 
 - (void) loadInterstitialAd {
-    self.placementId = [self.customEventConfig.thirdPartyCustomEventData objectForKey:@"placementId"];
+    self.placementId = [self.customEventConfig.thirdPartyCustomEventData objectForKey:@"adUnitId"];
     
     if (self.placementId == nil) {
         VRTError *error = [VRTError errorWithCode:VRTErrorCodeCustomEvent message:@"No placement Id"];

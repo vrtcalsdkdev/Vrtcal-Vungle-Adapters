@@ -20,7 +20,7 @@
 @implementation VRTBannerCustomEventVungle
 
 - (void) loadBannerAd {
-    NSString *placementId = [self.customEventConfig.thirdPartyCustomEventData objectForKey:@"placementId"];
+    NSString *placementId = [self.customEventConfig.thirdPartyCustomEventData objectForKey:@"adUnitId"];
 
     
     if (placementId == nil) {
