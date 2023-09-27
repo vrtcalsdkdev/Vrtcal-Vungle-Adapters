@@ -1,13 +1,6 @@
-//  Converted to Swift 5.8.1 by Swiftify v5.8.26605 - https://swiftify.com/
-//
-//  VRTBannerCustomEventGoogleMobileAds.h
-//
-//  Created by Scott McCoy on 5/9/19.
-//  Copyright © 2019 VRTCAL. All rights reserved.
-//
 
 //
-//  VRTInterstitialCustomEventGoogleMobileAds.m
+//  VRTInterstitialCustomEventVungle
 //
 //  Created by Scott McCoy on 5/9/19.
 //  Copyright © 2019 VRTCAL. All rights reserved.
@@ -16,46 +9,71 @@
 //Header
 //Vungle Banner Adapter, Vrtcal as Primary
 
+import VrtcalSDK
+
 class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTVungleManagerDelegate {
     private var placementId: String?
 
-    func loadInterstitialAd() {
-        placementId = customEventConfig.thirdPartyCustomEventData["adUnitId"] as? String
-
-        if placementId == nil {
-            let error = VRTError(code: VRTErrorCodeCustomEvent, message: "No placement Id")
-            customEventLoadDelegate.customEventFailedToLoadWithError(error)
+    override func loadInterstitialAd() {
+        guard let placementId = customEventConfig.thirdPartyAdUnitId(
+            customEventLoadDelegate: customEventLoadDelegate
+        ) else {
             return
         }
 
-        let error = VRTVungleManager.singleton().loadPlacement(
-            withID: placementId ?? "",
-            with: VungleAdSizeUnknown,
-            vrtVungleManagerDelegate: self as? VRTVungleManagerDelegate)
+        let error = VRTVungleManager.singleton.loadPlacement(
+            withID: placementId,
+            with: .unknown,
+            vrtVungleManagerDelegate: self
+        )
 
         if let error {
-            customEventLoadDelegate.customEventFailedToLoadWithError(error)
+            let vrtError = VRTError(vrtErrorCode: .customEvent, error: error)
+            customEventLoadDelegate?.customEventFailedToLoad(vrtError: vrtError)
             return
         }
     }
 
-    func showInterstitialAd() {
-        let vc = viewControllerDelegate.vrtViewControllerForModalPresentation()
-        VRTVungleManager.singleton().showInterstitial(placementId ?? "", viewController: vc)
+    override func showInterstitialAd() {
+        
+        guard let placementId else {
+            let vrtError = VRTError(vrtErrorCode: .customEvent, message: "placementId nil")
+            customEventShowDelegate?.customEventFailedToShow(
+                vrtError: vrtError
+            )
+            return
+        }
+        
+        guard let vc = viewControllerDelegate?.vrtViewControllerForModalPresentation() else {
+            customEventShowDelegate?.customEventFailedToShow(
+                vrtError: .customEventViewControllerNil
+            )
+            return
+        }
+        
+        if let error = VRTVungleManager.singleton.showInterstitial(
+            placementId: placementId,
+            viewController: vc
+        ) {
+            let vrtError = VRTError(vrtErrorCode: .customEvent, error: error)
+            customEventShowDelegate?.customEventFailedToShow(
+                vrtError: vrtError
+            )
+        }
     }
 
     // MARK: - VRTVungleManagerDelegate
 
     func vungleAdViewed(forPlacement placementID: String?) {
-        customEventShowDelegate.customEventShown()
+        customEventShowDelegate?.customEventShown()
     }
 
     func vungleDidCloseAd(forPlacementID placementID: String) {
-        customEventShowDelegate.customEventDidDismissModal(VRTModalTypeUnknown)
+        customEventShowDelegate?.customEventDidDismissModal(.unknown)
     }
 
     func vungleDidShowAd(forPlacementID placementID: String?) {
-        customEventShowDelegate.customEventShown()
+        customEventShowDelegate?.customEventShown()
     }
 
     func vungleRewardUser(forPlacementID placementID: String?) {
@@ -63,15 +81,15 @@ class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTV
     }
 
     func vungleTrackClick(forPlacementID placementID: String?) {
-        customEventShowDelegate.customEventClicked()
+        customEventShowDelegate?.customEventClicked()
     }
 
     func vungleWillCloseAd(forPlacementID placementID: String) {
-        customEventShowDelegate.customEventWillDismissModal(VRTModalTypeUnknown)
+        customEventShowDelegate?.customEventWillDismissModal(.unknown)
     }
 
     func vungleWillLeaveApplication(forPlacementID placementID: String?) {
-        customEventShowDelegate.customEventWillLeaveApplication()
+        customEventShowDelegate?.customEventWillLeaveApplication()
     }
 
     func vungleWillShowAd(forPlacementID placementID: String?) {
@@ -81,18 +99,22 @@ class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTV
     func vungleAdPlayabilityUpdate(_ isAdPlayable: Bool, placementID: String?, error: Error?) {
 
         if let error {
-            customEventLoadDelegate.customEventFailedToLoadWithError(error)
+            let vrtError = VRTError(vrtErrorCode: .customEvent, error: error)
+            customEventLoadDelegate?.customEventFailedToLoad(
+                vrtError: vrtError
+            )
             return
         }
 
         if !isAdPlayable {
-            let vrtError = VRTError(code: VRTErrorCodeNoFill, message: "Vungle Ad Not Playable")
-            customEventLoadDelegate.customEventFailedToLoadWithError(vrtError)
+            let vrtError = VRTError(
+                vrtErrorCode: .customEvent,
+                message: "Vungle Ad Not Playable"
+            )
+            customEventLoadDelegate?.customEventFailedToLoad(vrtError: vrtError)
             return
         }
 
-        customEventLoadDelegate.customEventLoaded()
+        customEventLoadDelegate?.customEventLoaded()
     }
 }
-
-//Dependencies

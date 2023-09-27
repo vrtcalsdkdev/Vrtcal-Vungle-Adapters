@@ -1,4 +1,4 @@
-//  Converted to Swift 5.8.1 by Swiftify v5.8.26605 - https://swiftify.com/
+
 //
 //  VRTVungleManagerDelegate.swift
 //  VrtcalSDKInternalTestApp
@@ -7,7 +7,9 @@
 //  Copyright © 2022 VRTCAL. All rights reserved.
 //
 
-protocol VRTVungleManagerDelegate: NSObjectProtocol {
+import VungleSDK
+
+protocol VRTVungleManagerDelegate: AnyObject {
     func vungleWillShowAd(forPlacementID placementID: String?)
     func vungleDidShowAd(forPlacementID placementID: String?)
     func vungleAdViewed(forPlacement placementID: String?)
