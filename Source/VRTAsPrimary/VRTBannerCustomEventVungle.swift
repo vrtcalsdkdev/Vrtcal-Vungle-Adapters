@@ -1,22 +1,6 @@
+// Vungle Banner Adapter, Vrtcal as Primary
 
-//
-//  VRTBannerCustomEventGoogleMobileAds.h
-//
-//  Created by Scott McCoy on 5/9/19.
-//  Copyright © 2019 VRTCAL. All rights reserved.
-//
-
-//
-//  VRTBannerCustomEventGoogleMobileAds.m
-//
-//  Created by Scott McCoy on 5/9/19.
-//  Copyright © 2019 VRTCAL. All rights reserved.
-//
-
-//Header
 import VrtcalSDK
-
-//Vungle Banner Adapter, Vrtcal as Primary
 
 class VRTBannerCustomEventVungle: VRTAbstractBannerCustomEvent {
     private var containerView: UIView?

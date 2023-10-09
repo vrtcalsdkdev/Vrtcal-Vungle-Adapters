@@ -1,28 +1,16 @@
-
 //
 //  VRTVungleManager.swift
 //  VrtcalSDKInternalTestApp
 //
 //  Created by Scott McCoy on 12/20/21.
 //  Copyright © 2021 VRTCAL. All rights reserved.
-//
-//
-//  VRTIronSourceManager.m
-//  VrtcalSDKInternalTestApp
-//
-//  Created by Scott McCoy on 12/20/21.
-//  Copyright © 2021 VRTCAL. All rights reserved.
-//
 
 //Header
 import Foundation
 import UIKit
 import VungleSDK
 
-
-
-
-
+//Vungle Banner Adapter, Vrtcal as Primary
 class VRTVungleManager {
     
     static let singleton = VRTVungleManager()
