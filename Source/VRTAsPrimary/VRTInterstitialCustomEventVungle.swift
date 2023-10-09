@@ -20,6 +20,8 @@ class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTV
         ) else {
             return
         }
+        
+        self.placementId = placementId
 
         let error = VRTVungleManager.singleton.loadPlacement(
             withID: placementId,

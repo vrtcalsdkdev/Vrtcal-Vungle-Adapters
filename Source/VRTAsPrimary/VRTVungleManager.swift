@@ -19,7 +19,7 @@ class VRTVungleManager {
     let vungleSDKDelegatePassthrough = VungleSDKDelegatePassthrough()
         
     init() {
-        vungleSdk = VungleSDK()
+        vungleSdk = VungleSDK.shared()
         vungleSdk.delegate = vungleSDKDelegatePassthrough
     }
     

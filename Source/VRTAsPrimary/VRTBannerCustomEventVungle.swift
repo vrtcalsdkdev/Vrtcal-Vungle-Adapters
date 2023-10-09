@@ -46,39 +46,47 @@ class VRTBannerCustomEventVungle: VRTAbstractBannerCustomEvent {
 extension VRTBannerCustomEventVungle: VRTVungleManagerDelegate {
 
     func vungleAdViewed(forPlacement placementID: String?) {
+        VRTLogInfo()
         customEventShowDelegate?.customEventShown()
     }
 
     func vungleDidCloseAd(forPlacementID placementID: String) {
+        VRTLogInfo()
         customEventShowDelegate?.customEventDidDismissModal(.unknown)
     }
 
     func vungleDidShowAd(forPlacementID placementID: String?) {
+        VRTLogInfo()
         customEventShowDelegate?.customEventShown()
     }
 
     func vungleRewardUser(forPlacementID placementID: String?) {
         // No VRT analog
+        VRTLogInfo()
     }
 
     func vungleTrackClick(forPlacementID placementID: String?) {
+        VRTLogInfo()
         customEventShowDelegate?.customEventClicked()
     }
 
     func vungleWillCloseAd(forPlacementID placementID: String) {
+        VRTLogInfo()
         customEventShowDelegate?.customEventWillDismissModal(.unknown)
     }
 
     func vungleWillLeaveApplication(forPlacementID placementID: String?) {
+        VRTLogInfo()
         customEventShowDelegate?.customEventWillLeaveApplication()
     }
 
     func vungleWillShowAd(forPlacementID placementID: String?) {
         // No VRT Analog
+        VRTLogInfo()
     }
 
     func vungleAdPlayabilityUpdate(_ isAdPlayable: Bool, placementID: String?, error: Error?) {
-
+        VRTLogInfo()
         if let error {
             let vrtError = VRTError(vrtErrorCode: .customEvent, error: error)
             customEventLoadDelegate?.customEventFailedToLoad(vrtError: vrtError)
