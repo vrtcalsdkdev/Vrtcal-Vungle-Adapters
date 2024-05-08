@@ -1,16 +1,8 @@
-//
-//  VRTVungleManager.swift
-//  VrtcalSDKInternalTestApp
-//
-//  Created by Scott McCoy on 12/20/21.
-//  Copyright © 2021 VRTCAL. All rights reserved.
-
-//Header
-import Foundation
-import UIKit
 import VungleSDK
+import VrtcalSDK
 
-//Vungle Banner Adapter, Vrtcal as Primary
+// Vungle Banner & Interstitial Adapter, Vrtcal as Primary
+// The VungleSDK has only one delegate. This singleton handles interactions with it.
 class VRTVungleManager {
     
     static let singleton = VRTVungleManager()
@@ -30,7 +22,7 @@ class VRTVungleManager {
         with size: VungleAdSize,
         vrtVungleManagerDelegate: VRTVungleManagerDelegate
     ) -> Error? {
-        
+        VRTLogInfo()
         let vrtVungleManagerDelegateWeakRef = VRTVungleManagerDelegateWeakRef(
             vrtVungleManagerDelegate: vrtVungleManagerDelegate
         )
@@ -48,7 +40,7 @@ class VRTVungleManager {
     }
     
     func showBanner(placementId: String, inContainerView containerView: UIView) -> Error? {
-
+        VRTLogInfo()
         let result = Result {
             try vungleSdk.addAdView(
                 to: containerView,
@@ -61,7 +53,7 @@ class VRTVungleManager {
     }
     
     func showInterstitial(placementId: String, viewController: UIViewController) -> Error? {
-
+        VRTLogInfo()
         let result = Result {
             try vungleSdk.playAd(
                 viewController,

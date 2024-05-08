@@ -15,6 +15,7 @@ class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTV
     private var placementId: String?
 
     override func loadInterstitialAd() {
+        VRTLogInfo()
         guard let placementId = customEventConfig.thirdPartyAdUnitId(
             customEventLoadDelegate: customEventLoadDelegate
         ) else {
@@ -30,6 +31,7 @@ class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTV
         )
 
         if let error {
+            VRTLogInfo("error: \(error)")
             let vrtError = VRTError(vrtErrorCode: .customEvent, error: error)
             customEventLoadDelegate?.customEventFailedToLoad(vrtError: vrtError)
             return
@@ -37,8 +39,9 @@ class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTV
     }
 
     override func showInterstitialAd() {
-        
+        VRTLogInfo()
         guard let placementId else {
+            VRTLogInfo("No placementId")
             let vrtError = VRTError(vrtErrorCode: .customEvent, message: "placementId nil")
             customEventShowDelegate?.customEventFailedToShow(
                 vrtError: vrtError
@@ -47,6 +50,7 @@ class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTV
         }
         
         guard let vc = viewControllerDelegate?.vrtViewControllerForModalPresentation() else {
+            VRTLogInfo("No view controller")
             customEventShowDelegate?.customEventFailedToShow(
                 vrtError: .customEventViewControllerNil
             )
@@ -57,6 +61,7 @@ class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTV
             placementId: placementId,
             viewController: vc
         ) {
+            VRTLogInfo("Failed to show")
             let vrtError = VRTError(vrtErrorCode: .customEvent, error: error)
             customEventShowDelegate?.customEventFailedToShow(
                 vrtError: vrtError
@@ -99,7 +104,7 @@ class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTV
     }
 
     func vungleAdPlayabilityUpdate(_ isAdPlayable: Bool, placementID: String?, error: Error?) {
-
+        VRTLogInfo("isAdPlayable: \(isAdPlayable), error: \(String(describing: error))")
         if let error {
             let vrtError = VRTError(vrtErrorCode: .customEvent, error: error)
             customEventLoadDelegate?.customEventFailedToLoad(

@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: VRTVungleManagerDelegateWeakRef
+// Allows for an array of weak references
 struct VRTVungleManagerDelegateWeakRef {
     weak var vrtVungleManagerDelegate: VRTVungleManagerDelegate?
 }

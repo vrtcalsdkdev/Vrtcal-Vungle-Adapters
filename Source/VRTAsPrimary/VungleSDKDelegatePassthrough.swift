@@ -6,56 +6,93 @@
 //
 
 import VungleSDK
+import VrtcalSDK
 
+// Note: VungleSDKDelegate requires NSObject
 class VungleSDKDelegatePassthrough: NSObject, VungleSDKDelegate {
 
     var delegates = [String: VRTVungleManagerDelegateWeakRef]()
     
     func vungleWillShowAd(forPlacementID placementID: String?) {
-        if let placementID {
-            delegates[placementID]?.vrtVungleManagerDelegate?.vungleWillShowAd(forPlacementID: placementID)
+        VRTLogInfo("placementID: \(String(describing: placementID))")
+        guard let placementID else {
+            return
         }
+        
+        delegates[placementID]?.vrtVungleManagerDelegate?.vungleWillShowAd(
+            forPlacementID: placementID
+        )
     }
 
     func vungleDidShowAd(forPlacementID placementID: String?) {
-        if let placementID {
-            delegates[placementID]?.vrtVungleManagerDelegate?.vungleDidShowAd(forPlacementID: placementID)
+        VRTLogInfo("placementID: \(String(describing: placementID))")
+        guard let placementID else {
+            return
         }
+
+        delegates[placementID]?.vrtVungleManagerDelegate?.vungleDidShowAd(
+            forPlacementID: placementID
+        )
     }
 
     func vungleAdViewed(forPlacement placementID: String) {
-        delegates[placementID]?.vrtVungleManagerDelegate?.vungleAdViewed(forPlacement: placementID)
+        VRTLogInfo("placementID: \(placementID)")
+        delegates[placementID]?.vrtVungleManagerDelegate?.vungleAdViewed(
+            forPlacement: placementID
+        )
     }
 
     func vungleWillCloseAd(forPlacementID placementID: String) {
-        delegates[placementID]?.vrtVungleManagerDelegate?.vungleWillCloseAd(forPlacementID: placementID)
+        VRTLogInfo("placementID: \(placementID)")
+        delegates[placementID]?.vrtVungleManagerDelegate?.vungleWillCloseAd(
+            forPlacementID: placementID
+        )
     }
 
     func vungleDidCloseAd(forPlacementID placementID: String) {
-        delegates[placementID]?.vrtVungleManagerDelegate?.vungleDidCloseAd(forPlacementID: placementID)
+        VRTLogInfo("placementID: \(placementID)")
+        delegates[placementID]?.vrtVungleManagerDelegate?.vungleDidCloseAd(
+            forPlacementID: placementID
+        )
     }
 
     func vungleTrackClick(forPlacementID placementID: String?) {
-        if let placementID {
-            delegates[placementID]?.vrtVungleManagerDelegate?.vungleTrackClick(forPlacementID: placementID)
+        VRTLogInfo("placementID: \(String(describing: placementID))")
+        guard let placementID else {
+            return
         }
+
+        delegates[placementID]?.vrtVungleManagerDelegate?.vungleTrackClick(forPlacementID: placementID)
     }
 
     func vungleWillLeaveApplication(forPlacementID placementID: String?) {
-        if let placementID {
-            delegates[placementID]?.vrtVungleManagerDelegate?.vungleWillLeaveApplication(forPlacementID: placementID)
+        VRTLogInfo("placementID: \(String(describing: placementID))")
+        guard let placementID else {
+            return
         }
+
+        delegates[placementID]?.vrtVungleManagerDelegate?.vungleWillLeaveApplication(forPlacementID: placementID)
     }
 
     func vungleRewardUser(forPlacementID placementID: String?) {
-        if let placementID {
-            delegates[placementID]?.vrtVungleManagerDelegate?.vungleRewardUser(forPlacementID: placementID)
+        VRTLogInfo("placementID: \(String(describing: placementID))")
+        guard let placementID else {
+            return
         }
+
+        delegates[placementID]?.vrtVungleManagerDelegate?.vungleRewardUser(forPlacementID: placementID)
     }
 
     func vungleAdPlayabilityUpdate(_ isAdPlayable: Bool, placementID: String?, error: Error?) {
-        if let placementID {
-            delegates[placementID]?.vrtVungleManagerDelegate?.vungleAdPlayabilityUpdate(isAdPlayable, placementID: placementID, error: error)
+        VRTLogInfo("placementID: \(String(describing: placementID))")
+        guard let placementID else {
+            return
         }
+
+        delegates[placementID]?.vrtVungleManagerDelegate?.vungleAdPlayabilityUpdate(
+            isAdPlayable,
+            placementID: placementID,
+            error: error
+        )
     }
 }

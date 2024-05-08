@@ -4,6 +4,7 @@ import VrtcalSDK
 
 class VRTBannerCustomEventVungle: VRTAbstractBannerCustomEvent {
     private var containerView: UIView?
+    var receivedVungleAdPlayabilityUpdate = false
     
     override func loadBannerAd() {
         guard let placementId = customEventConfig.thirdPartyCustomEventData["adUnitId"] as? String else {
@@ -21,7 +22,8 @@ class VRTBannerCustomEventVungle: VRTAbstractBannerCustomEvent {
             width: customEventConfig.adSize.width,
             height: customEventConfig.adSize.height)
         
-        //Must precede loadPlacementWithID as vungleAdPlayabilityUpdate is often called immediately
+        // vungleAdPlayabilityUpdate is often called immediately before Vungle's view is ready
+        // So, we return this container view that might not yet have a Vungle
         containerView = UIView(frame: frame)
         
         let error = VRTVungleManager.singleton.loadPlacement(
@@ -85,8 +87,19 @@ extension VRTBannerCustomEventVungle: VRTVungleManagerDelegate {
         VRTLogInfo()
     }
 
-    func vungleAdPlayabilityUpdate(_ isAdPlayable: Bool, placementID: String?, error: Error?) {
-        VRTLogInfo()
+    func vungleAdPlayabilityUpdate(
+        _ isAdPlayable: Bool,
+        placementID: String?,
+        error: Error?
+    ) {
+        VRTLogInfo("isAdPlayable: \(isAdPlayable), placementID: \(String(describing: placementID)) error: \(String(describing: error))")
+        
+        guard !receivedVungleAdPlayabilityUpdate else {
+            VRTLogInfo("Already received vungleAdPlayabilityUpdate, bailing")
+            return
+        }
+        receivedVungleAdPlayabilityUpdate = true
+
         if let error {
             let vrtError = VRTError(vrtErrorCode: .customEvent, error: error)
             customEventLoadDelegate?.customEventFailedToLoad(vrtError: vrtError)
