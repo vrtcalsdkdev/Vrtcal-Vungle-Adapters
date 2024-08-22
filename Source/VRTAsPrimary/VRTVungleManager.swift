@@ -36,7 +36,7 @@ class VRTVungleManager {
             )
         }
         
-        return result.getError()
+        return result.error
     }
     
     func showBanner(placementId: String, inContainerView containerView: UIView) -> Error? {
@@ -49,7 +49,7 @@ class VRTVungleManager {
             )
         }
         
-        return result.getError()
+        return result.error
     }
     
     func showInterstitial(placementId: String, viewController: UIViewController) -> Error? {
@@ -62,7 +62,7 @@ class VRTVungleManager {
             )
         }
         
-        return result.getError()
+        return result.error
     }
 }
 

@@ -1,13 +1,4 @@
-
-//
-//  VRTInterstitialCustomEventVungle
-//
-//  Created by Scott McCoy on 5/9/19.
-//  Copyright © 2019 VRTCAL. All rights reserved.
-//
-
-//Header
-//Vungle Banner Adapter, Vrtcal as Primary
+// Vungle Banner Adapter, Vrtcal as Primary
 
 import VrtcalSDK
 
@@ -15,13 +6,29 @@ class VRTInterstitialCustomEventVungle: VRTAbstractInterstitialCustomEvent, VRTV
     private var placementId: String?
 
     override func loadInterstitialAd() {
+        VRTAsPrimaryManager.singleton.initializeThirdParty(
+            customEventConfig: customEventConfig
+        ) { result in
+            switch result {
+            case .success():
+                self.finishLoadingInterstitial()
+            case .failure(let vrtError):
+                self.customEventLoadDelegate?.customEventFailedToLoad(vrtError: vrtError)
+            }
+        }
+    }
+    
+    func finishLoadingInterstitial() {
+        
+        
         VRTLogInfo()
-        guard let placementId = customEventConfig.thirdPartyAdUnitId(
+        guard let placementId = customEventConfig.thirdPartyCustomEventDataValueOrFailToLoad(
+            thirdPartyCustomEventKey: ThirdPartyCustomEventKey.adUnitId,
             customEventLoadDelegate: customEventLoadDelegate
         ) else {
             return
         }
-        
+
         self.placementId = placementId
 
         let error = VRTVungleManager.singleton.loadPlacement(

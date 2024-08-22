@@ -7,6 +7,21 @@ class VRTBannerCustomEventVungle: VRTAbstractBannerCustomEvent {
     var receivedVungleAdPlayabilityUpdate = false
     
     override func loadBannerAd() {
+        
+        VRTAsPrimaryManager.singleton.initializeThirdParty(
+            customEventConfig: customEventConfig
+        ) { result in
+            switch result {
+            case .success():
+                self.finishLoadingBanner()
+            case .failure(let vrtError):
+                self.customEventLoadDelegate?.customEventFailedToLoad(vrtError: vrtError)
+            }
+        }
+    }
+
+    func finishLoadingBanner() {
+        
         guard let placementId = customEventConfig.thirdPartyCustomEventData["adUnitId"] as? String else {
             let vrtError = VRTError(
                 vrtErrorCode: .customEvent,
