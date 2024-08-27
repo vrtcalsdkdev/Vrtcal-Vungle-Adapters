@@ -12,6 +12,12 @@ class VRTAsPrimaryManager: NSObject {
         customEventConfig: VRTCustomEventConfig,
         completionHandler: @escaping (Result<Void,VRTError>) -> ()
     ) {
+        guard !initialized else {
+            completionHandler(.success())
+            return
+        }
+        
+        
         // Require the appId
         guard let appId = customEventConfig.thirdPartyCustomEventDataValue(
             thirdPartyCustomEventKey: .appId
